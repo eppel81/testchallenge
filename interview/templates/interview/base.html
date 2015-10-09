@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="top-bar">
+        <section class="right">
+            {% if user.username %}
+                <li><a href="/auth/logout/">Выйти ({{ user.username }}) </a></li>
+            {% else %}
+                <li><a href="/auth/login/">Войти</a></li>
+                {# <a href="/auth/register/">Регистрация</a> #}
+            {% endif %}
+        </section>
+    </div>
+    {% block title %}<div class="callout panel">{{ title }}</div>{% endblock %}
+    {% block login %}{% endblock %}
+    {% block content %}{% endblock %}
+</body>
+</html>

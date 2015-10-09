@@ -1,0 +1,25 @@
+{% extends "interview/base.html" %}
+{% block title %}
+<h3> {{ title }} </h3>
+<p><h2>"{{ descr }}"</h2></p><br />
+{% endblock %}
+{% block content %}
+<div class="large-offset-0 large-10 columns">
+    <table>
+        <tr>
+            <th>Список вопросов \ id голосовавших</th>
+            {% for item in responses.0.resps %}
+                <th>{{ item.user_id }}</th>
+            {% endfor %}
+        </tr>
+            {% for item in responses %}
+                <tr>
+                    <td>{{ item.quest }}</td>
+                    {% for resp in item.resps%}
+                        <td>{{ resp.resp }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    </table>
+</div>
+{% endblock %}

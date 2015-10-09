@@ -1,0 +1,17 @@
+{% extends "interview/base.html" %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    {% if interviews %}
+        <ul>
+            {% for item in interviews %}
+                <li>
+                    <a href="{% url 'pass_interview' item.id %}">{{ item.description }}
+                    </a>{% if item.access %}(требуется регистрация){% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if 'interview.add_doneinterview' in perms %}
+        <a href="/interview/add_interview">Добавить опрос</a>
+    {% endif %}
+{% endblock %}

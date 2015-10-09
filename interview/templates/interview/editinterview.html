@@ -1,0 +1,21 @@
+{% extends "interview/base.html" %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<br />
+<div class="large-offset-0 large-10 columns">
+    <form action="" method="post">
+        {% csrf_token %}
+        <fieldset class="interview">
+            <table>
+                <thead><tr>
+
+                </tr></thead>
+            </table>
+        </fieldset>
+            {# <fieldset>{{ inter_form }}</fieldset> #}
+            {# <fieldset>{{ elem_formset }}</fieldset> #}
+
+        <p class="right"><input class="button" type="submit" value="save"></p>
+    </form>
+</div>
+{% endblock %}

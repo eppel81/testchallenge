@@ -1,0 +1,35 @@
+{% extends "interview/base.html" %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    {% if interview %}
+        <h2>{{ interview.description }}</h2>
+        {% for item in interview.interelem_set.all %}
+            <h6>Вопрос № {{ forloop.counter }}</h6>
+            <div class="small-6 medium-11 medium-centered column">
+                <ul class="">
+                    {% if item.text_before_elem %}
+                        <li>Текст перед элементом: <strong>{{ item.text_before_elem }}</strong></li>
+                    {% endif %}
+                    <li>Тип элемента: <strong>{{ item.type_elem }}</strong></li>
+                    {% if item.text_after_elem %}
+                        <li>Текст после элемента: <strong>{{ item.text_after_elem }}</strong></li>
+                    {% endif %}
+                    {% if item.default_value %}
+                        <li>Значение по умолчанию: <strong>{{ item.default_value }}</strong></li>
+                    {% endif %}
+                    {% if item.radio_select_values %}
+                        <li>Список возможных вариантов: <strong>{{ item.radio_select_values }}</strong></li>
+                    {% endif %}
+                    {% if item.top_bottom_values %}
+                        <li>min, max значения для Digital picker: <strong>{{ item.top_bottom_values }}</strong></li>
+                    {% endif %}
+                    {% if item.position %}
+                        <li>Номер позиции в опросе: <strong>{{ item.position }}</strong></li>
+                    {% endif %}
+                    <p><em class="em-margin"><a href="#">изменить</a></em><em class="em-margin"><a href="#">удалить</a></em></p>
+                </ul>
+            </div><hr />
+        {% endfor %}
+        <a href="#">Добавить элемент к опросу</a>
+    {% endif %}
+{% endblock %}

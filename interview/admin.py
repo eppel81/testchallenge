@@ -1,7 +1,20 @@
 from django.contrib import admin
 
-from interview.models import Interview, TypeInterElem, InterElem
+from interview.models import Interview, InterElem, DoneInterview
 
-admin.site.register(Interview)
+class ElemInline(admin.TabularInline):
+    model = InterElem
+    extra = 1
+
+class InterviewAdmin(admin.ModelAdmin):
+    inlines = [ElemInline]
+
+
+# class DoneInterviewAdmin(admin.ModelAdmin):
+#     fields = [ elem_interview, user_id, response, user_meta]
+
+admin.site.register(Interview, InterviewAdmin)
 admin.site.register(InterElem)
-admin.site.register(TypeInterElem)
+admin.site.register(DoneInterview)
+
+# admin.site.register(TypeInterElem)

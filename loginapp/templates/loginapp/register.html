@@ -1,0 +1,10 @@
+{% extends "interview/base.html" %}
+{% block login %}
+<div class="class large-offset-3 large-6 columns">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input class="button" type="submit" value="Зарегистрироваться">
+    </form>
+</div>
+{% endblock%}
