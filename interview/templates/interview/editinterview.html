@@ -1,21 +1,54 @@
 {% extends "interview/base.html" %}
-{% block title %} {{ title }} {% endblock %}
+{% block title %} <h2>{{ title }}</h2> {% endblock %}
 {% block content %}
 <br />
-<div class="large-offset-0 large-10 columns">
     <form action="" method="post">
-        {% csrf_token %}
-        <fieldset class="interview">
-            <table>
-                <thead><tr>
-
-                </tr></thead>
+            {% csrf_token %}
+        <div class="callout panel">
+                <fieldset>
+                    <table>
+                        {{ inter_form }}
+                    </table>
+                </fieldset>
+        </div>
+        {% if elem_formset %}
+        <div class="callout panel">
+            <fieldset>
+            <table class="" width="100%">
+                {{ elem_formset.management_form }}
+                <thead>
+                    {% for field in elem_formset.forms.0 %}
+                        {% if not field.is_hidden %}
+                            <th>{{ field.label_tag }}</th>
+                        {% else %}
+                            <th style="display:none">{{ field.label_tag }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </thead>
+                {% for form in elem_formset %}
+                    <tr>
+                        {% for field in form %}
+                            {% if not field.is_hidden %}
+                                <td>
+                                    {{ field }}
+                                    {% if field.errors%}
+                                        {{ field.errors }}
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <td style="display:none">{{ field }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                {# {{ elem_formset }} #}
             </table>
-        </fieldset>
-            {# <fieldset>{{ inter_form }}</fieldset> #}
-            {# <fieldset>{{ elem_formset }}</fieldset> #}
-
-        <p class="right"><input class="button" type="submit" value="save"></p>
-    </form>
-</div>
+            </fieldset>
+        </div>
+        {% endif %}
+        <p class="right"><input class="button" type="submit" value="сохранить"></p><br />
+        {% if elem_formset %}
+            <p><a href="/interview/"><span class="Success Label">Перейти к списку опросов</span></a></p>
+        {% endif %}
+        </form>
 {% endblock %}

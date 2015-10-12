@@ -1,0 +1,13 @@
+.descr-elem {
+    color: blue;
+}
+.em-margin {
+    margin: auto 50px;
+}
+.errorlist li {
+    font-weight: 900;
+    background-color: #fd8686;
+}
+h2 {
+text-align: center;
+}

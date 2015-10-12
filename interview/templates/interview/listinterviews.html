@@ -5,13 +5,19 @@
         <ul>
             {% for item in interviews %}
                 <li>
-                    <a href="{% url 'pass_interview' item.id %}">{{ item.description }}
-                    </a>{% if item.access %}(требуется регистрация){% endif %}
+                    <a href="{% url 'pass_interview' item.id %}">
+                            {{ item.description }}
+                    </a>
+                    {% if item.access %}(требуется регистрация){% endif %}
+                    {% if 'interview.add_interview' in perms %}
+                        <p><a href="{% url 'edit_interview' item.id %}">&nbsp&nbsp&nbsp<font size="0.75em">(изменить)</font></a>
+                        <a href="{% url 'interview_results' item.id %}">&nbsp&nbsp&nbsp<font size="0.75em">(результаты)</font></a></p>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
     {% if 'interview.add_doneinterview' in perms %}
-        <a href="/interview/add_interview">Добавить опрос</a>
+        <a href="/interview/add_interview"><span class="label">Добавить опрос</span></a>
     {% endif %}
 {% endblock %}

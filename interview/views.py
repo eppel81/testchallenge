@@ -19,6 +19,7 @@ def message(request, mess_text):
     """
     return render(request, 'interview/message.html', {'title': mess_text})
 
+
 def list_interviews(request):
     """
     Выводит список всех существующих опросов
@@ -29,6 +30,7 @@ def list_interviews(request):
     c_dict['interviews'] = Interview.objects.all()
     return render(request, 'interview/listinterviews.html', c_dict)
 
+
 def edit_interview(request, interview_id):
     """
     Тут будет страница для редактирования конкретного опроса
@@ -38,13 +40,14 @@ def edit_interview(request, interview_id):
     c_dict['interview'] = interview
     return render(request, "interview/edit_interview.html", c_dict)
 
+
 def edit_interview2(request, interview_id):
     """
     Тут попробуем через наборы модельных форм inlineformset_factory
     """
     interview = get_object_or_404(Interview, pk=interview_id)
     # InterviewFromset =()
-    ElemFormset = inlineformset_factory(Interview, InterElem, fields='__all__', extra=1, can_order=True)
+    ElemFormset = inlineformset_factory(Interview, InterElem, fields='__all__', extra=1)
     c_dict = {}
     c_dict.update(csrf(request))
     c_dict['title'] = 'Редактируем опрос'
@@ -54,13 +57,14 @@ def edit_interview2(request, interview_id):
         if inter_form.is_valid and elem_formset.is_valid():
             inter_form.save()
             elem_formset.save()
-            return redirect('/interview/')
+            return HttpResponseRedirect(reverse('edit_interview', args=(interview_id,)))
     else:
         inter_form = forms.FormEditInterview(instance=interview)
         elem_formset = ElemFormset(instance=interview, prefix='elems')
     c_dict['inter_form'] = inter_form
     c_dict['elem_formset'] = elem_formset
     return render(request, "interview/editinterview.html", c_dict)
+
 
 def pass_interview(request, interview_id):
     """
@@ -107,6 +111,7 @@ def pass_interview(request, interview_id):
         c_dict['form'] = form
         if form.is_valid():
             cd = form.cleaned_data
+
             # тут сохраняем введенные юзером данные по перечню элементов опроса
             # можно потом вынести в FormInterview.save()
             for key in cd:
@@ -157,3 +162,22 @@ def interview_result(request, interview_id):
         c_dict['responses'] = resps
         # for elem in elems:
     return render(request, 'interview/interviewresults.html', c_dict)
+
+
+def add_interview(request):
+    """
+    Тут добавляем новый опрос в базу
+    """
+    c_dict = {}
+    c_dict.update(csrf(request))
+    c_dict['title'] = 'Добавляем опрос'
+    if request.POST:
+        inter_form = forms.FormEditInterview(request.POST)
+        if inter_form.is_valid():
+            interview_id = inter_form.save()
+            # return redirect('interview/%s/edit' % interview_id)
+            return HttpResponseRedirect(reverse('edit_interview', args=(interview_id.id, )))
+    else:
+        inter_form = forms.FormEditInterview()
+    c_dict['inter_form'] = inter_form
+    return render(request, 'interview/editinterview.html', c_dict)

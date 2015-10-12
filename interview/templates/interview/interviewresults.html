@@ -1,5 +1,8 @@
 {% extends "interview/base.html" %}
 {% block title %}
+<br />
+<a href="/interview/"><span class="success label">К списку опросов</span></a>
+<br />
 <h3> {{ title }} </h3>
 <p><h2>"{{ descr }}"</h2></p><br />
 {% endblock %}
@@ -8,7 +11,7 @@
     <table>
         <tr>
             <th>Список вопросов \ id голосовавших</th>
-            {% for item in responses.0.resps %}
+            {% for item in responses.1.resps %}
                 <th>{{ item.user_id }}</th>
             {% endfor %}
         </tr>

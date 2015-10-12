@@ -1,15 +1,20 @@
 {% extends "interview/base.html" %}
-{% block title %} <h2>{{ title }} </h2> {% endblock %}
-{% block content %}
+{% block title %}
 <br />
+<a href="/interview/"><span class="success label">К списку опросов</span></a>
+<br />
+    <h2>{{ title }} </h2>
+{% endblock %}
+{% block content %}
+
 <div class="large-offset-3 large-6 columns">
     <form action="" method="post" name="interview">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Подтвердить">
+        <p class="right"><input class="button" type="submit" value="Подтвердить"></p>
     </form>
     {% if 'interview.add_interview' in perms %}
-        <p class="right"><a href="{% url 'edit_interview' interview_id %}">Внести изменения</a></p>
+        <p class="left"><a href="{% url 'edit_interview' interview_id %}"><span class="label">Внести изменения</span></a></p>
     {% endif %}
 </div>
 {% endblock %}
