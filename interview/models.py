@@ -30,15 +30,15 @@ class InterElem(models.Model):
 
     interview = models.ForeignKey(Interview)
     # type element (text, checkbox, radio
-    type_elem = models.CharField(max_length=10, choices=type_elem_list, default='txt')
-    text_before_elem = models.CharField(max_length=200)
-    text_after_elem = models.CharField(max_length=200, blank=True)
-    default_value = models.CharField(max_length=200, blank=True)
+    type_elem = models.CharField(max_length=10, choices=type_elem_list, default='txt', verbose_name='Тип ответа на вопрос')
+    text_before_elem = models.CharField(max_length=200, verbose_name='Текст вопроса')
+    text_after_elem = models.CharField(max_length=200, blank=True, verbose_name='Вспомогательный текст')
+    default_value = models.CharField(max_length=200, blank=True, verbose_name='Значение по умолчанию')
     # варианты значений для radio и select
-    radio_select_values = models.CharField(max_length=200, blank=True)
-    top_bottom_values = models.CharField(max_length=25, blank=True)
+    radio_select_values = models.CharField(max_length=200, blank=True, verbose_name='Значения для radio и select')
+    top_bottom_values = models.CharField(max_length=25, blank=True, verbose_name='Min и Max для Digit picker')
     # номер позиции на форме.
-    position = models.SmallIntegerField()
+    position = models.SmallIntegerField(verbose_name='Позиция вопроса в списке')
 
     def __unicode__(self):
         return self.text_before_elem
