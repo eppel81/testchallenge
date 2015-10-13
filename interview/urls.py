@@ -9,5 +9,4 @@ urlpatterns = [
     url(r'^(?P<interview_id>[0-9]*)/edit/$', views.edit_interview2, name='edit_interview'),
     url(r'^add_interview/', views.add_interview, name='add_interview'),
     url(r'^message', views.message, name='message'),
-    url(r'^create/$', views.create_interview, name='create'),
 ]

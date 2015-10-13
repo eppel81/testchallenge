@@ -139,10 +139,6 @@ def pass_interview(request, interview_id):
     return render(request, 'interview/passinterview.html', c_dict)
 
 
-def create_interview(request):
-    return render(request, 'interview/createInterview.html', {'title': 'Interview creation'})
-
-
 # закрываем доступ для обычных (не staff) юзеров с переходом на список опросов
 #@permission_required('interview.add_interview', login_url='/interview/')
 def interview_result(request, interview_id):
@@ -186,6 +182,9 @@ def interview_result(request, interview_id):
         for user in users:
             user_resps = []
             for elem in elems:
+
+                # нужно перехватить исключение, т.к. вопрос-элемент мог добавиться к опросу после
+                # голосования каким-либо юзером и тогда просто не будет нужного объекта-результат голосования.
                 try:
                     elem_response = DoneInterview.objects.get(user_id=user, interelem=elem)
                     tmp = elem_response.resp
