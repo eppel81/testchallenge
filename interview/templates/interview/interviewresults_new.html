@@ -4,9 +4,12 @@
         <p><h2>"{{ descr }}"</h2></p><br />
     {% endblock %}
 {% block content %}
-{% if questions %}
+{% if resps %}
     <div class="large-offset-1 large-12 columns">
-    <table>
+    <table class="table_col">
+        <colgroup>
+            <col style="background:#C7DAF0;">
+        </colgroup>
         <tr>
             <th>user_id</th>
             {% for quest in questions %}
@@ -24,7 +27,7 @@
     </table>
     </div>
 {% else %}
-    <h3>Извините, но пока вопросы не готовы</h3>
+    <h3>Пока никто не проходил этот опрос</h3>
 {% endif %}
 <br />
 <a href="/interview/"><span class="success label">К списку опросов</span></a>
