@@ -153,15 +153,50 @@ def interview_result(request, interview_id):
     interview = get_object_or_404(Interview, pk=interview_id)
     c_dict['title'] = 'А вот и результаты голосования по опросу:'
     c_dict['descr'] = interview.description
-    elems = interview.interelem_set.order_by('position')
+
+    # оборачиваем list, чтобы выполнить запрос именно в этом месте
+    elems = list(interview.interelem_set.order_by('position'))
+
     if elems:
+        # выберем всех юзеров, которые голосовали по конкретному опросу
+        # done_interview_users = DoneInterview.objects.filter(interelem__in=list(elems)).distinct('user_id')
+        # distinct - почему-то не заработал
+        done_interview_users = DoneInterview.objects.filter(interelem__in=list(elems))
+
+        # здесь будем сохранять уникальных голосовавших пользователей
+        users = []
+        for done_interview_user in done_interview_users:
+            if done_interview_user.user_id not in users:
+                users.append(done_interview_user.user_id)
+
         resps = []
+        questions = []
+
+        # формируем список вопросов-элементов интервью
         for elem in elems:
-            resps.append({'quest': elem.text_before_elem,
-                          'resps': DoneInterview.objects.filter(interelem=elem).order_by('user_id')})
-        c_dict['responses'] = resps
+            questions.append(elem.text_before_elem)
+
         # for elem in elems:
-    return render(request, 'interview/interviewresults.html', c_dict)
+        #     resps.append({'quest': elem.text_before_elem,
+        #                   'resps': DoneInterview.objects.filter(interelem=elem).order_by('user_id')})
+        # c_dict['responses'] = resps
+
+        # проходим по перечню объектов результатов голосования с уникальными юзерами.
+        # Это для того, чтобы отобразить в шаблоне таблицу, растущую вниз.
+        for user in users:
+            user_resps = []
+            for elem in elems:
+                try:
+                    elem_response = DoneInterview.objects.get(user_id=user, interelem=elem)
+                    tmp = elem_response.resp
+                except Exception:
+                    tmp = ''
+                user_resps.append(tmp)
+            resps.append((user, user_resps))
+
+        c_dict['questions'] = questions
+        c_dict['resps'] = resps
+    return render(request, 'interview/interviewresults_new.html', c_dict)
 
 
 def add_interview(request):

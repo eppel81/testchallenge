@@ -1,0 +1,28 @@
+{% extends "interview/base.html" %}
+{% block title %}
+<br />
+<a href="/interview/"><span class="success label">К списку опросов</span></a>
+<br />
+<h3> {{ title }} </h3>
+<p><h2>"{{ descr }}"</h2></p><br />
+{% endblock %}
+{% block content %}
+<div class="large-offset-1 large-12 columns">
+<table>
+    <tr>
+        <th>user_id</th>
+        {% for quest in questions %}
+            <th>{{ quest }}</th>
+        {% endfor %}
+    </tr>
+    {% for resp in resps %}
+        <tr>
+            <td>{{ resp.0 }}</td>
+            {% for item in resp.1 %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
