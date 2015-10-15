@@ -5,11 +5,58 @@
     <form action="" method="post">
             {% csrf_token %}
         <div class="callout panel">
-                <fieldset>
-                    <table>
-                        {{ inter_form }}
-                    </table>
-                </fieldset>
+            <fieldset>
+                <!--{{ inter_form }}-->
+                    <!--<div class="container">-->
+                        <div class="row">
+                            <div class='col-sm-8'>
+                                <div class="form-group">
+                                <table>
+                                {% for field in inter_form %}
+                                    {% if not field.is_hidden %}
+                                        {% if field.name != 'create_date' %}
+                                            <tr>
+                                                <td>
+                                                    {{ field.label_tag }}
+                                                </td>
+                                                <td>
+                                                    {{ field }}
+                                                    {% if field.errors%}
+                                                        {{ field.errors }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class='input-group date' id='datetimepicker2'>
+                                                        <input type='text' class="form-control" value="{{ field.value|date:'Y-n-d H:i:s' }}" name="create_date"/>
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                        {% if field.errors%}
+                                                            {{ field.errors }}
+                                                        {% endif %}
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        $(function () {
+                                                            var dt = $("#datetimepicker2").find("input").val();
+                                                            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss', defaultDate: dt});
+                                                        });
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        <tr style="display:none">{{ field }}</tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    <!--</div>-->
+            </fieldset>
         </div>
         {% if elem_formset %}
         <div class="callout panel">

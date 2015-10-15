@@ -54,7 +54,7 @@ def edit_interview2(request, interview_id):
     if request.method == 'POST':
         inter_form = forms.FormEditInterview(request.POST, instance=interview)
         elem_formset = ElemFormset(request.POST, instance=interview, prefix='elems')
-        if inter_form.is_valid and elem_formset.is_valid():
+        if inter_form.is_valid() and elem_formset.is_valid():
             inter_form.save()
             elem_formset.save()
             return HttpResponseRedirect(reverse('edit_interview', args=(interview_id,)))

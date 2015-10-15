@@ -27,6 +27,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
+
+STATIC_URL = '/static/'
+
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = (STATIC_PATH, )
+
+BOWER_COMPONENTS_ROOT = os.path.join(STATIC_PATH, 'components')
+
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -38,6 +51,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'interview',
     'loginapp',
+    'djangobower',
+)
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'moment',
+    'bootstrap',
+    'eonasdan-bootstrap-datetimepicker',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,11 +118,3 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = '/static/'
-
-STATIC_PATH = os.path.join(BASE_DIR, 'static')
-
-STATICFILES_DIRS = (STATIC_PATH, )
