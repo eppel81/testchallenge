@@ -25,7 +25,7 @@ def list_interviews(request):
     Выводит список всех существующих опросов
     """
     c_dict = {}
-    c_dict['title'] = 'List of all interviews:'
+    c_dict['title'] = 'Список всех опросов:'
     c_dict['user'] = auth.get_user(request)
     c_dict['interviews'] = Interview.objects.all()
     return render(request, 'interview/listinterviews.html', c_dict)
@@ -141,7 +141,7 @@ def pass_interview(request, interview_id):
 
 # закрываем доступ для обычных (не staff) юзеров с переходом на список опросов
 #@permission_required('interview.add_interview', login_url='/interview/')
-def interview_result(request, interview_id):
+def interview_results(request, interview_id):
     """
     Вывод результатов конкретного опроса
     """
@@ -157,7 +157,7 @@ def interview_result(request, interview_id):
         # выберем всех юзеров, которые голосовали по конкретному опросу
         # done_interview_users = DoneInterview.objects.filter(interelem__in=list(elems)).distinct('user_id')
         # distinct - почему-то не заработал
-        done_interview_users = DoneInterview.objects.filter(interelem__in=list(elems))
+        done_interview_users = DoneInterview.objects.filter(interelem__in=elems)
 
         # здесь будем сохранять уникальных голосовавших пользователей
         users = []
@@ -171,11 +171,6 @@ def interview_result(request, interview_id):
         # формируем список вопросов-элементов интервью
         for elem in elems:
             questions.append(elem.text_before_elem)
-
-        # for elem in elems:
-        #     resps.append({'quest': elem.text_before_elem,
-        #                   'resps': DoneInterview.objects.filter(interelem=elem).order_by('user_id')})
-        # c_dict['responses'] = resps
 
         # проходим по перечню объектов результатов голосования с уникальными юзерами.
         # Это для того, чтобы отобразить в шаблоне таблицу, растущую вниз.
@@ -191,11 +186,36 @@ def interview_result(request, interview_id):
                 except Exception:
                     tmp = ''
                 user_resps.append(tmp)
+            # добавляем в список кортеж ('юзер', [ответы...])
             resps.append((user, user_resps))
 
         c_dict['questions'] = questions
         c_dict['resps'] = resps
     return render(request, 'interview/interviewresults_new.html', c_dict)
+
+
+# def interview_results_new(requerst, interview_id):
+#     """
+#     Обновленная функция interview_result (см. выше). Тут немного подругому обращаемся к базе данных.
+#     """
+#     c_dict = {}
+#     interview = get_object_or_404(Interview, pk=interview_id)
+#     elems = list(interview.interelem_set.order_by('position'))
+#
+#     # тут список объектов-ответов всех юзеров по данному интервью
+#     all_resps = list(DoneInterview.objects.filter(interelem__in=elems))
+#
+#     # выберем список юзеров
+#     users_list = []
+#     for item in all_resps:
+#         if item.user_id not in users_list:
+#             users_list.append(item.user_id)
+#
+#     # для каждого юзера вытащим нужный ответ
+#     for item in all_resps:
+#         pass
+#
+#     return render(requerst, 'interview/interviewresults_new.html', c_dict)
 
 
 def add_interview(request):

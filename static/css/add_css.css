@@ -39,3 +39,13 @@ border-left: 20px solid white;
 padding: 12px 10px;
 color: #8b8e91;
 }
+
+.interview-elems {
+    background: white;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.interview-elems td {
+    vertical-align: center;
+}

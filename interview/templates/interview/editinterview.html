@@ -61,7 +61,7 @@
         {% if elem_formset %}
         <div class="callout panel">
             <fieldset>
-            <table class="" width="100%">
+            <table class="interview-elems" width="100%">
                 {{ elem_formset.management_form }}
                 <thead>
                     {% for field in elem_formset.forms.0 %}
@@ -95,7 +95,7 @@
         {% endif %}
         <p class="right"><input class="button" type="submit" value="сохранить"></p><br />
         {% if elem_formset %}
-            <p><a href="/interview/"><span class="Success Label">Перейти к списку опросов</span></a></p>
+            <p><a href="/interview/"><span class="btn btn-success">Перейти к списку опросов</span></a></p>
         {% endif %}
         </form>
 {% endblock %}
