@@ -4,6 +4,7 @@
   "authors": [
     "Name <email@gmail.com>"
   ],
+  "directory" : "static/components/bower_components/",
   "license": "MIT",
   "ignore": [
     "**/.*",
