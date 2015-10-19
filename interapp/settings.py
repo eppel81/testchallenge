@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 # for Heroku
-STATIC_ROOT = 'staticfiles'
+# STATIC_ROOT = 'staticfiles'
 
 STATIC_URL = '/static/'
 
