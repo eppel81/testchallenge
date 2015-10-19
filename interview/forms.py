@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from models import Interview
 import re
@@ -51,3 +52,24 @@ class FormEditInterview(forms.ModelForm):
     class Meta:
         model = Interview
         fields = '__all__'
+
+
+class ElemsInlineFormSet(forms.BaseInlineFormSet):
+    """
+    Переопределяем конструктор BaseInlineFormSet - для сортировки queryset InterElem по значению 'позиция элемента'.
+    Это нужно для правильного отображения в форме редактирования опросов
+    """
+    def __init__(self, data=None, files=None, instance=None,
+                 save_as_new=False, prefix=None, queryset=None, **kwargs):
+        if instance is None:
+            self.instance = self.fk.rel.to()
+        else:
+            self.instance = instance
+        self.save_as_new = save_as_new
+        if queryset is None:
+            queryset = self.model._default_manager
+        if self.instance.pk is not None:
+            qs = queryset.filter(**{self.fk.name: self.instance}).order_by('position')
+        else:
+            qs = queryset.none()
+        super(forms.BaseInlineFormSet, self).__init__(data, files, prefix=prefix, queryset=qs, **kwargs)

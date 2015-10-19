@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'interapp.wsgi.application'
 #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #     'NAME': 'dem',
 #     'USER': 'dem',
-#     'PASSWORD': 'qwe',
+#     'PASSWORD': '123',
 #     'HOST': 'localhost', # Set to empty string for localhost.
 #     'PORT': '', # Set to empty string for default.
 #     }

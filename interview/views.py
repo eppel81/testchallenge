@@ -47,7 +47,7 @@ def edit_interview2(request, interview_id):
     """
     interview = get_object_or_404(Interview, pk=interview_id)
     # InterviewFromset =()
-    ElemFormset = inlineformset_factory(Interview, InterElem, fields='__all__', extra=1)
+    ElemFormset = inlineformset_factory(Interview, InterElem, formset=forms.ElemsInlineFormSet, fields='__all__', extra=1)
     c_dict = {}
     c_dict.update(csrf(request))
     c_dict['title'] = 'Редактируем опрос'
