@@ -27,10 +27,17 @@
                                                 </td>
                                             </tr>
                                         {% else %}
+                                            <!--<tr>-->
+                                                <!--<td colspan="2">-->
+                                                    <!--{{ field }}-->
+                                                    <!--{{ field.errors }}-->
+                                                <!--</td>-->
+                                            <!--</tr>-->
                                             <tr>
                                                 <td colspan="2">
                                                     <div class='input-group date' id='datetimepicker2'>
-                                                        <input type='text' class="form-control" value="{{ field.value|date:'Y-n-d H:i:s' }}" name="create_date"/>
+                                                        <input type='text' class="form-control" id="id_create_date" value='{{ field.value|date:"Y-n-d H:i:s" }}' name="create_date"/>
+                                                        <!--<input type='text' class="form-control" id="id_create_date" value={{ field.value }} name="create_date"/>-->
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>

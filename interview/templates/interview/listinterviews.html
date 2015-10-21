@@ -8,8 +8,9 @@
             <ol>
                 {% for item in interviews %}
                     <li>
-                        <h3><a href="{% url 'pass_interview' item.id %}">{{ item.description }}</a></h3>
-                        {% if item.access %}(требуется регистрация){% endif %}
+                        <h3><a href="{% url 'pass_interview' item.id %}">{{ item.description }}</a>
+                            {% if item.access %}<span class="clarification">(требуется регистрация)</span>{% endif %}
+                        </h3><br />
                         {% if 'interview.add_interview' in perms %}
                             <a class="btn btn-info btn-small" href="{% url 'edit_interview' item.id %}">изменить</a>
                             <a class="btn btn-info btn-small" href="{% url 'interview_results' item.id %}">результаты</a>

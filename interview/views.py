@@ -13,6 +13,7 @@ import pdb
 
 from models import Interview, InterElem, DoneInterview
 
+
 def message(request, mess_text):
     """
     Для отображения сообщений
@@ -31,36 +32,51 @@ def list_interviews(request):
     return render(request, 'interview/listinterviews.html', c_dict)
 
 
+# def edit_interview2(request, interview_id):
+#     """
+#     Тут будет страница для редактирования конкретного опроса - сейчас не используется
+#     """
+#     c_dict = {}
+#     interview = get_object_or_404(Interview, pk=interview_id)
+#     c_dict['interview'] = interview
+#     return render(request, "interview/edit_interview.html", c_dict)
+
+
 def edit_interview(request, interview_id):
     """
-    Тут будет страница для редактирования конкретного опроса
-    """
-    c_dict = {}
-    interview = get_object_or_404(Interview, pk=interview_id)
-    c_dict['interview'] = interview
-    return render(request, "interview/edit_interview.html", c_dict)
-
-
-def edit_interview2(request, interview_id):
-    """
-    Тут попробуем через наборы модельных форм inlineformset_factory
+    Тут попробуем через наборы модельных форм modelformset_factory
     """
     interview = get_object_or_404(Interview, pk=interview_id)
-    # InterviewFromset =()
-    ElemFormset = inlineformset_factory(Interview, InterElem, formset=forms.ElemsInlineFormSet, fields='__all__', extra=1)
+    ElemFormset = modelformset_factory(InterElem, exclude=('interview',), extra=1, can_delete=True)
     c_dict = {}
     c_dict.update(csrf(request))
     c_dict['title'] = 'Редактируем опрос'
     if request.method == 'POST':
         inter_form = forms.FormEditInterview(request.POST, instance=interview)
-        elem_formset = ElemFormset(request.POST, instance=interview, prefix='elems')
-        if inter_form.is_valid() and elem_formset.is_valid():
+        elem_formset = ElemFormset(request.POST,
+                                   queryset=InterElem.objects.filter(interview=interview).order_by('position'),
+                                   prefix='elems')
+
+        if elem_formset.is_valid() and inter_form.is_valid():
             inter_form.save()
-            elem_formset.save()
+
+            # тут нужно еще досохранить объект интервью в каждой форме
+            forms_list = elem_formset.save(commit=False)
+
+            # удалим формы, помеченные для удаления (checkbox)
+            for item in elem_formset.deleted_objects:
+                item.delete()
+
+            # досохраняем объект interview для правильной внешней ссылки
+            for item in forms_list:
+                item.interview = interview
+                item.save()
+
             return HttpResponseRedirect(reverse('edit_interview', args=(interview_id,)))
     else:
         inter_form = forms.FormEditInterview(instance=interview)
-        elem_formset = ElemFormset(instance=interview, prefix='elems')
+        elem_formset = ElemFormset(queryset=InterElem.objects.filter(interview=interview).order_by('position'),
+                                   prefix='elems')
     c_dict['inter_form'] = inter_form
     c_dict['elem_formset'] = elem_formset
     return render(request, "interview/editinterview.html", c_dict)

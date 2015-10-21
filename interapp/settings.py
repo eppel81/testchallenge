@@ -13,11 +13,16 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'testchallengedjango@gmail.com'
+EMAIL_HOST_PASSWORD = 'Qq321321'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'testchallengedjango@gmail.com'
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# for Heroku
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -109,21 +114,26 @@ WSGI_APPLICATION = 'interapp.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'dem',
-    'USER': 'dem',
-    'PASSWORD': '123',
-    'HOST': 'localhost', # Set to empty string for localhost.
-    'PORT': '', # Set to empty string for default.
-    }
-}
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#     'NAME': 'dem',
+#     'USER': 'dem',
+#     'PASSWORD': '123',
+#     'HOST': 'localhost', # Set to empty string for localhost.
+#     'PORT': '', # Set to empty string for default.
+#     }
+# }
+
+
+# for Heroku
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Parse database configuration from $DATABASE_URL
 # import dj_database_url
-# DATABASES = {}
-# DATABASES['default'] = dj_database_url.config()
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
