@@ -6,10 +6,16 @@ class Interview(models.Model):
     """
     Interview's model/
     """
+    type_access = (
+        ('0', 'Для всех'),
+        ('1', 'Для зарегистрированных'),
+    )
+
     description = models.CharField(max_length=250)
     create_date = models.DateTimeField('Дата создания')
     # для указания уровня доступа (0-без авторизации, 1-авториз. 2-подтверждением мыла)
-    access = models.IntegerField(default=0)
+    # access = models.IntegerField(default=0)
+    access = models.CharField(max_length=2, choices=type_access, default='0', verbose_name='Уровень доступа')
 
     def __unicode__(self):
         return self.description

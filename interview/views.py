@@ -57,22 +57,25 @@ def edit_interview(request, interview_id):
                                    queryset=InterElem.objects.filter(interview=interview).order_by('position'),
                                    prefix='elems')
 
-        if elem_formset.is_valid() and inter_form.is_valid():
-            inter_form.save()
+        if elem_formset.is_valid():
+            if inter_form.is_valid():
+                inter_form.save()
 
-            # тут нужно еще досохранить объект интервью в каждой форме
-            forms_list = elem_formset.save(commit=False)
+                # тут нужно еще досохранить объект интервью в каждой форме
+                forms_list = elem_formset.save(commit=False)
 
-            # удалим формы, помеченные для удаления (checkbox)
-            for item in elem_formset.deleted_objects:
-                item.delete()
+                # удалим формы, помеченные для удаления (checkbox)
+                for item in elem_formset.deleted_objects:
+                    item.delete()
 
-            # досохраняем объект interview для правильной внешней ссылки
-            for item in forms_list:
-                item.interview = interview
-                item.save()
+                # досохраняем объект interview для правильной внешней ссылки
+                for item in forms_list:
+                    item.interview = interview
+                    item.save()
 
-            return HttpResponseRedirect(reverse('edit_interview', args=(interview_id,)))
+                return HttpResponseRedirect(reverse('edit_interview', args=(interview_id,)))
+        if inter_form.is_valid():
+            inter_form = forms.FormEditInterview(instance=interview)
     else:
         inter_form = forms.FormEditInterview(instance=interview)
         elem_formset = ElemFormset(queryset=InterElem.objects.filter(interview=interview).order_by('position'),
@@ -96,7 +99,7 @@ def pass_interview(request, interview_id):
 
     # тут надо проверить access в interview (нужно авторизироваться или куки)
     user = auth.get_user(request)
-    if interview.access > 0 and user.is_anonymous():
+    if int(interview.access) > 0 and user.is_anonymous():
         return render(request, 'interview/message.html',
                       {'title': 'Только для зарегистрированных пользователей'})
 

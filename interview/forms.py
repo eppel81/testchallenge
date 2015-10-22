@@ -49,7 +49,9 @@ class FormInterview(forms.Form):
     #     pass
 
 class FormEditInterview(forms.ModelForm):
+    create_date = forms.DateTimeField(widget=forms.DateTimeInput(format='%Y-%m-%d %H:%M:%S'))
     class Meta:
         model = Interview
         fields = '__all__'
+        # localized_fields = ('create_date', )
 
