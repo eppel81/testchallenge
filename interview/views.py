@@ -28,7 +28,7 @@ def list_interviews(request):
     c_dict = {}
     c_dict['title'] = 'Список всех опросов:'
     c_dict['user'] = auth.get_user(request)
-    c_dict['interviews'] = Interview.objects.all()
+    c_dict['interviews'] = Interview.objects.all().order_by('id')
     return render(request, 'interview/listinterviews.html', c_dict)
 
 
