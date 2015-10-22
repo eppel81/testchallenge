@@ -62,7 +62,9 @@ def register(request):
             # шлем на почту подтверждение о регистрации
             email_subject = 'Подтверждение регистрации'
             email_body = 'Спасибо за регистрацию, {0}. Чтобы активировать учетную запись перейдите ' \
-                         'по ссылке http://127.0.0.1:8000/auth/confirm/{1}'.format(username, activation_key)
+                         'по ссылке http://sheltered-harbor-3118.herokuapp.com/auth/confirm/{1}'.format(username, activation_key)
+                         # 'по ссылке http://127.0.0.1:8000/auth/confirm/{1}'.format(username, activation_key)
+
             send_mail(email_subject, email_body, 'testchallengedjango@gmail.com', [email], fail_silently=False)
 
             c_dict['success_registration'] = 'Не забудьте подтвердить регистрацию в электронной почте'
