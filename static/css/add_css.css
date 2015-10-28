@@ -1,6 +1,7 @@
 .descr-elem {
     color: blue;
 }
+
 .em-margin {
     margin: auto 50px;
 }
@@ -16,7 +17,7 @@ text-align: center;
 .table_col {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
   font-size: 14px;
-  width: 80%;
+  width: 100%;
   background: white;
   text-align: left;
   border-collapse: collapse;
@@ -52,4 +53,8 @@ color: #8b8e91;
 
 .clarification {
     font-size: 0.55em;
+}
+
+.elems-table th {
+    background-color: #eff0b2 /*8bc4ff*/;
 }

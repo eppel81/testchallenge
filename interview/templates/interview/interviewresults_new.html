@@ -5,11 +5,11 @@
     {% endblock %}
 {% block content %}
 {% if resps %}
-    <div class="large-offset-1 large-12 columns">
+<div class="container">
     <table class="table_col">
-        <colgroup>
-            <col style="background:#C7DAF0;">
-        </colgroup>
+        <!--<colgroup>-->
+            <!--<col style="background:#C7DAF0;">-->
+        <!--</colgroup>-->
         <tr>
             <th>user_id</th>
             {% for quest in questions %}
@@ -25,12 +25,13 @@
             </tr>
         {% endfor %}
     </table>
-    </div>
-{% else %}
-    <h3>Пока никто не проходил этот опрос</h3>
-{% endif %}
-<br />
-<a href="/interview/"><span class="btn btn-success">К списку опросов</span></a>
-<br />
-{{ tmp }}
+
+    {% else %}
+        <h3>Пока никто не проходил этот опрос</h3>
+    {% endif %}
+    <br />
+    <!--<a href="/interview/"><span class="btn btn-success">К списку опросов</span></a>-->
+    <br />
+    {{ tmp }}
+</div>
 {% endblock %}

@@ -1,33 +1,44 @@
 {% extends "interview/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block login %}
-    <div class="class large-offset-3 large-6 columns">
-        <form class="form-signup" action="" method="post">{% csrf_token %}
-        <h2>Регистрация</h2>
+    <!--<div class="class large-offset-3 large-6 columns">-->
+    <div class="container">
+        <div class="row">
+            <!--<div class="col-xs-4"></div>-->
+            <div class="col-xs-4 col-xs-offset-4">
+                <form class="form-signup" action="" method="post">{% csrf_token %}
+                <h2>Регистрация</h2>
+                {{ form|crispy }}
 
-        <div class="fieldWrapper">
-            <label>E-mail</label>
-            {{ form.email.errors }}
-            {{ form.email }}
+                <!--<div class="fieldWrapper">-->
+                    <!--<label>E-mail</label>-->
+                    <!--{{ form.email.errors }}-->
+                    <!--{{ form.email }}-->
+                <!--</div>-->
+                <!--<div class="fieldWrapper">-->
+                    <!--<label>Имя пользователя</label>-->
+                    <!--{{form.username.errors}}-->
+                    <!--{{ form.username }}-->
+                <!--</div>-->
+                <!--<div class="fieldWrapper">-->
+                    <!--<label>Пароль</label>-->
+                    <!--{{form.password1.errors}}-->
+                    <!--{{ form.password1 }}-->
+                <!--</div>-->
+                <!--<div class="fieldWrapper">-->
+                    <!--<label>Пароль ещё раз</label>-->
+                    <!--{{form.password2.errors}}-->
+                    <!--{{ form.password2 }}-->
+                <!--</div>-->
+
+
+                <input class="btn btn-primary" name="submit" type="submit" value="Зарегистрироваться" />
+                </form>
+                <br />
+                <br />
+                <!--<a class="btn btn-success" href="/interview/">Перейти к списку опросов</a>-->
+            </div>
         </div>
-        <div class="fieldWrapper">
-            <label>Имя пользователя</label>
-            {{form.username.errors}}
-            {{ form.username }}
-        </div>
-        <div class="fieldWrapper">
-            <label>Пароль</label>
-            {{form.password1.errors}}
-            {{ form.password1 }}
-        </div>
-        <div class="fieldWrapper">
-            <label>Пароль ещё раз</label>
-            {{form.password2.errors}}
-            {{ form.password2 }}
-        </div>
-        <input class="btn btn-primary" name="submit" type="submit" value="Зарегистрироваться" />
-        </form>
-        <br />
-        <a class="btn btn-success" href="/interview/">Перейти к списку опросов</a>
     </div>
 {% endblock%}

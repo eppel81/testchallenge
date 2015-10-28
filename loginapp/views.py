@@ -13,24 +13,52 @@ import forms
 import models
 import pdb
 
+
 def login(request):
     c_dict = {}
-    c_dict['title'] = "Let\'s login"
+    c_dict['title'] = ""
     c_dict.update(csrf(request))
-    if request.POST:
-        username = request.POST.get('username', '')
-        userpass = request.POST.get('userpass', '')
-        user = auth.authenticate(username=username, password=userpass)
-        if user:
-            if user.is_active:
-                auth.login(request, user)
-                return redirect('/interview/')
+    if request.method == 'POST':
+        login_form = forms.LoginForm(request.POST)
+        if login_form.is_valid():
+            cd = login_form.cleaned_data
+            username = cd['username']
+            userpass = cd['userpass']
+            user = auth.authenticate(username=username, password=userpass)
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    return redirect('/interview/')
+                else:
+                    c_dict['login_error'] = 'Подтвердите пожалуйста регистрацию в Вашей электронной почте'
             else:
-                c_dict['login_error'] = 'Подтвердите пожалуйста регистрацию в Вашей электронной почте'
-        else:
-            c_dict['login_error'] = 'Такого пользователя нет'
-            # return render(request, 'loginapp/login.html', c_dict)
+                c_dict['login_error'] = 'Такого пользователя нет'
+                # return render(request, 'loginapp/login.html', c_dict)
+    else:
+        login_form = forms.LoginForm()
+    c_dict['form'] = login_form
     return render(request, 'loginapp/login.html', c_dict)
+
+
+#  Вьюха логина когда форма была сгенерирована в html
+# def login(request):
+#     c_dict = {}
+#     c_dict['title'] = "Let\'s login"
+#     c_dict.update(csrf(request))
+#     if request.POST:
+#         username = request.POST.get('username', '')
+#         userpass = request.POST.get('userpass', '')
+#         user = auth.authenticate(username=username, password=userpass)
+#         if user:
+#             if user.is_active:
+#                 auth.login(request, user)
+#                 return redirect('/interview/')
+#             else:
+#                 c_dict['login_error'] = 'Подтвердите пожалуйста регистрацию в Вашей электронной почте'
+#         else:
+#             c_dict['login_error'] = 'Такого пользователя нет'
+#             # return render(request, 'loginapp/login.html', c_dict)
+#     return render(request, 'loginapp/login.html', c_dict)
 
 
 def logout(request):

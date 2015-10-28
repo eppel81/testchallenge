@@ -1,108 +1,126 @@
 {% extends "interview/base.html" %}
-{% block title %} <h2>{{ title }}</h2> {% endblock %}
+{% block title %}{% endblock %}
 {% block content %}
 <br />
     <form action="" method="post">
             {% csrf_token %}
-        <div class="callout panel">
-            <fieldset>
+        <!--<div class="callout panel">-->
+            <!--<fieldset>-->
                 <!--{{ inter_form }}-->
-                    <!--<div class="container">-->
-                        <div class="row">
-                            <div class='col-sm-8'>
-                                <div class="form-group">
-                                <table>
-                                {% for field in inter_form %}
-                                    {% if not field.is_hidden %}
-                                        {% if field.name != 'create_date' %}
-                                            <tr>
-                                                <td>
-                                                    {{ field.label_tag }}
-                                                </td>
+                <div class="container-fluent">
+                    <div class="row">
+                    <div class="panel panel-success">
+                        <div class="panel-heading"><h4>Опрос:&nbsp;&nbsp;&nbsp;{{ title }}</h4></div>
+                    <div class="panel-body">
+                                <div class='col-xs-2'>
+
+                                    <!--<div class="form-group">-->
+                                    <table class="table table-hover table-striped table-bordered">
+                                    {% for field in inter_form %}
+                                        {% if not field.is_hidden %}
+                                            {% if field.name != 'create_date' %}
+                                                <tr>
+                                                    <td>
+                                                        {{ field.label_tag }}
+                                                    </td>
+                                                    <td>
+                                                        {{ field }}
+                                                        {% if field.errors%}
+                                                            {{ field.errors }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class='input-group date' id='datetimepicker2'>
+                                                            <input type='text' class="form-control" id="id_create_date" value='{{ field.value|date:"Y-n-d H:i:s" }}' name="create_date"/>
+                                                            <!--<input type='text' class="form-control" id="id_create_date" value={{ field.value }} name="create_date"/>-->
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                            {% if field.errors%}
+                                                                {{ field.errors }}
+                                                            {% endif %}
+                                                        </div>
+                                                        <script type="text/javascript">
+                                                            $(function () {
+                                                                var dt = $("#datetimepicker2").find("input").val();
+                                                                $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss', defaultDate: dt});
+                                                            });
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% else %}
+                                            <tr style="display:none">{{ field }}</tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </table>
+                                    <!--</div>-->
+                                </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            <!--</fieldset>-->
+        <!--</div>-->
+        <div class="container-fluent">
+            <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4>Элементы опроса:</h4></div>
+            <div class="panel-body">
+
+                    <div class="col-xs-12">
+                    {% if elem_formset %}
+                        <table class="table table-hover table-striped table-bordered elems-table" width="100%">
+                            {{ elem_formset.management_form }}
+                            <thead>
+                                <tr>
+                                    {% for field in elem_formset.forms.0 %}
+                                        {% if not field.is_hidden %}
+                                            <th>{{ field.label_tag }}</th>
+                                        {% else %}
+                                            <th style="display:none">{{ field.label_tag }}</th>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for form in elem_formset %}
+                                    <tr>
+                                        {% for field in form %}
+                                            {% if not field.is_hidden %}
                                                 <td>
                                                     {{ field }}
                                                     {% if field.errors%}
                                                         {{ field.errors }}
                                                     {% endif %}
                                                 </td>
-                                            </tr>
-                                        {% else %}
-                                            <!--<tr>-->
-                                                <!--<td colspan="2">-->
-                                                    <!--{{ field }}-->
-                                                    <!--{{ field.errors }}-->
-                                                <!--</td>-->
-                                            <!--</tr>-->
-                                            <tr>
-                                                <td colspan="2">
-                                                    <div class='input-group date' id='datetimepicker2'>
-                                                        <input type='text' class="form-control" id="id_create_date" value='{{ field.value|date:"Y-n-d H:i:s" }}' name="create_date"/>
-                                                        <!--<input type='text' class="form-control" id="id_create_date" value={{ field.value }} name="create_date"/>-->
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                        {% if field.errors%}
-                                                            {{ field.errors }}
-                                                        {% endif %}
-                                                    </div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            var dt = $("#datetimepicker2").find("input").val();
-                                                            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss', defaultDate: dt});
-                                                        });
-                                                    </script>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% else %}
-                                        <tr style="display:none">{{ field }}</tr>
-                                    {% endif %}
+                                            {% else %}
+                                                <td style="display:none">{{ field }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
                                 {% endfor %}
-                                </table>
-                                </div>
-                            </div>
-                        </div>
-                    <!--</div>-->
-            </fieldset>
-        </div>
-        {% if elem_formset %}
-        <div class="callout panel">
-            <fieldset>
-            <table class="interview-elems" width="100%">
-                {{ elem_formset.management_form }}
-                <thead>
-                    {% for field in elem_formset.forms.0 %}
-                        {% if not field.is_hidden %}
-                            <th>{{ field.label_tag }}</th>
-                        {% else %}
-                            <th style="display:none">{{ field.label_tag }}</th>
+                                {# {{ elem_formset }} #}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    </div>
+                <div class="row">
+                    <div class="col-xs-11">
+                        {% if elem_formset %}
+                            <p><a href="/interview/"><span class="btn btn-success">Перейти к списку опросов</span></a></p>
                         {% endif %}
-                    {% endfor %}
-                </thead>
-                {% for form in elem_formset %}
-                    <tr>
-                        {% for field in form %}
-                            {% if not field.is_hidden %}
-                                <td>
-                                    {{ field }}
-                                    {% if field.errors%}
-                                        {{ field.errors }}
-                                    {% endif %}
-                                </td>
-                            {% else %}
-                                <td style="display:none">{{ field }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-                {# {{ elem_formset }} #}
-            </table>
-            </fieldset>
+                    </div>
+                    <div class="col-xs-1">
+                        <p class="right"><input class="btn btn-primary pull-right" type="submit" value="сохранить"></p><br />
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
         </div>
-        {% endif %}
-        <p class="right"><input class="button" type="submit" value="сохранить"></p><br />
-        {% if elem_formset %}
-            <p><a href="/interview/"><span class="btn btn-success">Перейти к списку опросов</span></a></p>
-        {% endif %}
-        </form>
+    </form>
 {% endblock %}

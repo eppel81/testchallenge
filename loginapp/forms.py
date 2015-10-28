@@ -28,3 +28,7 @@ class RegistrationForm(UserCreationForm):
             user.is_active = False
             user.save()
         return user
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Имя пользователя')
+    userpass = forms.CharField(label='Пароль', widget=forms.PasswordInput)

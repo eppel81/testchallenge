@@ -3,29 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Interview</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/add_css.css' %}" />
-
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}" />-->
     <script type="text/javascript" src="{% static 'components/bower_components/jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'components/bower_components/moment/min/moment.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'components/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'components/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'components/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'components/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/add_css.css' %}" />
 </head>
 <body>
-    <div class="top-bar">
-        <section class="right">
-            {% if user.username %}
-                <li><a href="/auth/logout/">Выйти ({{ user.username }}) </a></li>
-            {% else %}
-                <li><a href="/auth/login/">Войти</a></li>
-                {# <a href="/auth/register/">Регистрация</a> #}
-            {% endif %}
-        </section>
-    </div>
-    {% block title %}<div class="callout panel">{{ title }}</div>{% endblock %}
-    {% block login %}{% endblock %}
-    {% block content %}{% endblock %}
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Сайт мегаопросов</a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav navbar-right">
+              {% if user.username %}
+                  <li><a href="/auth/logout/">Выйти ({{ user.username }})</a></li>
+              {% else %}
+                  <li><a href="/auth/login/"><span class="glyphicon glyphicon-user"></span>Войти</a></li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- It is foundation framework-->
+        <!--<div class="top-bar">-->
+            <!--<section class="right">-->
+                <!--{% if user.username %}-->
+                    <!--<li><a href="/auth/logout/">Выйти ({{ user.username }}) </a></li>-->
+                <!--{% else %}-->
+                    <!--<li><a href="/auth/login/">Войти</a></li>-->
+                    <!--{# <a href="/auth/register/">Регистрация</a> #}-->
+                <!--{% endif %}-->
+            <!--</section>-->
+        <!--</div>-->
+    <!-- It is foundation framework-->
+
+    {% block title %}<div>{{ title }}</div>{% endblock %}
+    {% block login %}{% endblock login %}
+    {% block content %}{% endblock content %}
 </body>
 </html>

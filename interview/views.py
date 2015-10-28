@@ -8,10 +8,9 @@ from django.contrib.auth.decorators import permission_required
 from django.forms.models import modelformset_factory, inlineformset_factory
 import random
 import forms
-from models import Interview, InterElem
 import pdb
 
-from models import Interview, InterElem, DoneInterview
+from .models import Interview, InterElem, DoneInterview
 
 
 def message(request, mess_text):
@@ -50,7 +49,7 @@ def edit_interview(request, interview_id):
     ElemFormset = modelformset_factory(InterElem, exclude=('interview',), extra=1, can_delete=True)
     c_dict = {}
     c_dict.update(csrf(request))
-    c_dict['title'] = 'Редактируем опрос'
+    c_dict['title'] = '"' + str(interview) + '"'
     if request.method == 'POST':
         inter_form = forms.FormEditInterview(request.POST, instance=interview)
         elem_formset = ElemFormset(request.POST,
@@ -119,7 +118,7 @@ def pass_interview(request, interview_id):
     # готовим context для шаблона
     c_dict = {}
     c_dict['interview_id'] = interview_id
-    c_dict['title'] = 'Doing interview'
+    c_dict['title'] = '"' + str(interview) + '"'
     c_dict.update(csrf(request))
 
     if request.method != 'POST':
@@ -166,7 +165,6 @@ def interview_results(request, interview_id):
     """
     c_dict = {}
     interview = get_object_or_404(Interview, pk=interview_id)
-    c_dict['title'] = 'А вот и результаты голосования по опросу:'
     c_dict['descr'] = interview.description
 
     # оборачиваем list, чтобы выполнить запрос именно в этом месте
@@ -208,6 +206,9 @@ def interview_results(request, interview_id):
             # добавляем в список кортеж ('юзер', [ответы...])
             resps.append((user, user_resps))
 
+        # если есть ответы на вопросы интервью
+        if resps:
+            c_dict['title'] = 'А вот и результаты голосования по опросу:'
         c_dict['questions'] = questions
         c_dict['resps'] = resps
     return render(request, 'interview/interviewresults_new.html', c_dict)
