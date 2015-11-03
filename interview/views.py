@@ -254,4 +254,4 @@ def add_interview(request):
     else:
         inter_form = forms.FormEditInterview()
     c_dict['inter_form'] = inter_form
-    return render(request, 'interview/editinterview.html', c_dict)
+    return render(request, 'interview/edit_interview.html', c_dict)
