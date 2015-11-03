@@ -81,7 +81,7 @@ def edit_interview(request, interview_id):
                                    prefix='elems')
     c_dict['inter_form'] = inter_form
     c_dict['elem_formset'] = elem_formset
-    return render(request, "interview/editinterview.html", c_dict)
+    return render(request, "interview/edit_interview.html", c_dict)
 
 
 def pass_interview(request, interview_id):
@@ -208,7 +208,7 @@ def interview_results(request, interview_id):
 
         # если есть ответы на вопросы интервью
         if resps:
-            c_dict['title'] = 'А вот и результаты голосования по опросу:'
+            c_dict['title'] = 'Результаты голосования по опросу:'
         c_dict['questions'] = questions
         c_dict['resps'] = resps
     return render(request, 'interview/interviewresults_new.html', c_dict)

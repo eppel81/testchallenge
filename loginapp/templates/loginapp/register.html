@@ -1,7 +1,10 @@
 {% extends "interview/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block login %}
+{% block title%}
+{% endblock title%}
+
+{% block content %}
     <!--<div class="class large-offset-3 large-6 columns">-->
     <div class="container">
         <div class="row">
@@ -33,12 +36,13 @@
                 <!--</div>-->
 
 
-                <input class="btn btn-primary" name="submit" type="submit" value="Зарегистрироваться" />
+                <input class="btn btn-primary btn-block" name="submit" type="submit" value="Зарегистрироваться" />
                 </form>
                 <br />
                 <br />
                 <!--<a class="btn btn-success" href="/interview/">Перейти к списку опросов</a>-->
+                <div class="cap"></div>
             </div>
         </div>
     </div>
-{% endblock%}
+{% endblock content %}

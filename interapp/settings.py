@@ -116,16 +116,16 @@ WSGI_APPLICATION = 'interapp.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'dem',
-    'USER': 'dem',
-    'PASSWORD': '123',
-    'HOST': 'localhost', # Set to empty string for localhost.
-    'PORT': '', # Set to empty string for default.
-    }
-}
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#     'NAME': 'dem',
+#     'USER': 'dem',
+#     'PASSWORD': '123',
+#     'HOST': 'localhost', # Set to empty string for localhost.
+#     'PORT': '', # Set to empty string for default.
+#     }
+# }
 
 
 # for Heroku
@@ -133,9 +133,9 @@ DATABASES = {
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Parse database configuration from $DATABASE_URL
-# import dj_database_url
-# DATABASES = {}
-# DATABASES['default'] = dj_database_url.config()
+import dj_database_url
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

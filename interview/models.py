@@ -11,7 +11,8 @@ class Interview(models.Model):
         ('1', 'Для зарегистрированных'),
     )
 
-    description = models.CharField(max_length=250)
+    description = models.CharField(max_length=250, verbose_name='Название')
+    wide_description = models.TextField(blank=True, verbose_name='Описание')
     create_date = models.DateTimeField('Дата создания')
     # для указания уровня доступа (0-без авторизации, 1-авториз. 2-подтверждением мыла)
     # access = models.IntegerField(default=0)

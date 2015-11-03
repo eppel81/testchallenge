@@ -19,7 +19,7 @@ class RegistrationForm(UserCreationForm):
                 return email
             else:
                 raise forms.ValidationError('Заполните адрес электронной почты')
-        raise forms.ValidationError('Такой алрес электронной почты уже зарезервирован')
+        raise forms.ValidationError('Такой адрес электронной почты уже зарезервирован')
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)

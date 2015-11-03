@@ -1,28 +1,56 @@
 {% extends "interview/base.html" %}
+
+{% block alert %}
+    {% if not interviews %}
+        <div class="container">
+            <div class="row">
+                <div class="alert alert-warning" role="alert">Извините, но пока нет ни одного опроса.</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock alert %}
+
 {% block title %} <h2>{{ title }}</h2> {% endblock %}
+
 {% block content %}
-    {% if interviews %}
-    <div class="container">
-        <div class="row">
-        <div class="span8">
-            <ol>
-                {% for item in interviews %}
-                    <li>
-                        <h3><a href="{% url 'pass_interview' item.id %}">{{ item.description }}</a>
-                            {% if item.access == '1' %}<span class="clarification">(требуется регистрация)</span>{% endif %}
-                        </h3><br />
-                        {% if 'interview.add_interview' in perms %}
-                            <a class="btn btn-info btn-small" href="{% url 'edit_interview' item.id %}">изменить</a>
-                            <a class="btn btn-info btn-small" href="{% url 'interview_results' item.id %}">результаты</a>
-                        {% endif %}
-                    </li>
+<div class="container">
+    <div class="row">
+        <!--<div class="col-xs-12">-->
+            {% if interviews %}
+                {% for inter in interviews%}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <!-- Проверим есть ли полномочия для изменения или просмотра результатов опросов-->
+                            {% if 'interview.add_interview' in perms %}
+                            <div class="dropdown pull-right">
+                                <button class="btn btn-info dropdown-toggle" type="button"
+                                        data-toggle="dropdown">Выбрать действие<span class="carret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'edit_interview' inter.id %}">Редактировать</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'interview_results' inter.id %}">Результаты</a></li>
+                                </ul>
+			  			    </div>
+                            {% endif %}
+                            <h3>
+                                <a href="{% url 'pass_interview' inter.id %}">{{ inter.description }}</a>
+                                {% if request.user.is_anonymous %}
+                                    {% if inter.access == '1' %}<span class="small bg-warning"> - (требуется регистрация)</span>{% endif %}
+                                {% endif %}
+                            </h3>
+                            <p>{{ inter.create_date|date:"d F Y" }}</p>
+                            <p>{{ inter.wide_description }}</p>
+
+                        </div>
+                    </div>
                 {% endfor %}
-            </ol>
             {% endif %}
-            {% if 'interview.add_doneinterview' in perms %}
-                <a class="btn btn-warning" href="/interview/add_interview"><h4><span class="label">Добавить опрос</span></h4></a>
-            {% endif %}
-        </div>
-        </div>
+        <!--</div>-->
     </div>
+    <div class="row">
+        {% if 'interview.add_interview' in perms %}
+             <a href="{% url 'add_interview' %}"><button type="button" class="btn btn-success btn-block btn-lg">Создать новый опрос</button></a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

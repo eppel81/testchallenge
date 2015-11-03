@@ -11,40 +11,76 @@
     <link rel="stylesheet" href="{% static 'components/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'components/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/add_css.css' %}" />
+    {% block extra_css %}{% endblock extra_css%}
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
+    <!-- start header-->
+    <nav class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+      <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Сайт мегаопросов</a>
+            <!-- если мы не на стартовой, то выводим "На главную"-->
+            {% if request.path == '/' or request.path == '/interview/' %}
+                <a class="navbar-brand" href="/">Мегаопросы</a>
+            {% else %}
+                <a class="navbar-brand" href="/">На главную</a>
+            {% endif %}
         </div>
-        <div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="" title="Помощь">Помощь</a></li>
+                <li><a href="" title="О нас">О нас</a></li>
+            </ul>
           <ul class="nav navbar-nav navbar-right">
               {% if user.username %}
-                  <li><a href="/auth/logout/">Выйти ({{ user.username }})</a></li>
+                <li><a href="/auth/logout/"><span class="glyphicon glyphicon-log-out"></span>Выйти ({{ user.username }}) </a></li>
               {% else %}
-                  <li><a href="/auth/login/"><span class="glyphicon glyphicon-user"></span>Войти</a></li>
+                <li><a href="/auth/login/"><span class="glyphicon glyphicon-user"></span>Войти</a></li>
+                {# <a href="/auth/register/">Регистрация</a> #}
               {% endif %}
           </ul>
         </div>
       </div>
     </nav>
 
-    <!-- It is foundation framework-->
-        <!--<div class="top-bar">-->
-            <!--<section class="right">-->
-                <!--{% if user.username %}-->
-                    <!--<li><a href="/auth/logout/">Выйти ({{ user.username }}) </a></li>-->
-                <!--{% else %}-->
-                    <!--<li><a href="/auth/login/">Войти</a></li>-->
-                    <!--{# <a href="/auth/register/">Регистрация</a> #}-->
-                <!--{% endif %}-->
-            <!--</section>-->
-        <!--</div>-->
-    <!-- It is foundation framework-->
+    <div class="container">
+        <!-- Header с картинками и текстом-->
+        <div class="row container-border">
+            <br /><br /><br />
+            <div class="col-xs-3">
+                <img src="{% static 'img/inter_1.png' %}" class="header-img">
+            </div>
+            <div class="col-xs-7">
+                <div class="header-box">
+                    <div class="header-text">
+                        <h1 class="h1-header">Самая передовая система опросов</h1>
+                        <p class="text-center">Опросим любого любым опросом!!!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <img class="header-img pull-right" src="{% static 'img/inter_2.png' %}">
+            </div>
+        </div>
+    </div>
+    <!-- end header-->
 
-    {% block title %}<div>{{ title }}</div>{% endblock %}
-    {% block login %}{% endblock login %}
+    <!-- main content-->
+    {% block alert %}
+
+    {% endblock alert %}
+
+    <h2>{% block title %} Тестовая система проведения опросов {% endblock %}</h2>
+
     {% block content %}{% endblock content %}
+    <!-- end content -->
+
+    <!-- start footer-->
+    <div class="container">
+        <div class="row container-border" id="footer">
+          <div class="col-xs-12 text-center">
+            &copy; 2015 Система проведения опросов
+          </div>
+        </div>
+    </div>
 </body>
 </html>

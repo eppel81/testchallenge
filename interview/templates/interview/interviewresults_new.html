@@ -1,37 +1,50 @@
 {% extends "interview/base.html" %}
-    {% block title %}
-        <h3> {{ title }} </h3>
-        <p><h2>"{{ descr }}"</h2></p><br />
-    {% endblock %}
-{% block content %}
-{% if resps %}
-<div class="container">
-    <table class="table_col">
-        <!--<colgroup>-->
-            <!--<col style="background:#C7DAF0;">-->
-        <!--</colgroup>-->
-        <tr>
-            <th>user_id</th>
-            {% for quest in questions %}
-                <th>{{ quest }}</th>
-            {% endfor %}
-        </tr>
-        {% for resp in resps %}
-            <tr>
-                <td>{{ resp.0 }}</td>
-                {% for item in resp.1 %}
-                    <td>{{ item }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
 
-    {% else %}
-        <h3>Пока никто не проходил этот опрос</h3>
+{% block alert %}
+    {% if not resps %}
+        <div class="container">
+            <div class="row">
+                <div class="alert alert-warning" role="alert"> Пока никто не проходил данный опрос</div>
+            </div>
+        </div>
     {% endif %}
-    <br />
-    <!--<a href="/interview/"><span class="btn btn-success">К списку опросов</span></a>-->
-    <br />
-    {{ tmp }}
-</div>
+{% endblock alert%}
+
+{% block title %}
+    {{ title }}<br />
+    <strong>"{{ descr }}"</strong>
+    <br /><br />
+{% endblock %}
+
+{% block content %}
+    {% if resps %}
+    <div class="container">
+        <div class="row">
+            <table class="table_col">
+                <!--<colgroup>-->
+                    <!--<col style="background:#C7DAF0;">-->
+                <!--</colgroup>-->
+                <tr>
+                    <th>user_id</th>
+                    {% for quest in questions %}
+                        <th>{{ quest }}</th>
+                    {% endfor %}
+                </tr>
+                {% for resp in resps %}
+                    <tr>
+                        <td>{{ resp.0 }}</td>
+                        {% for item in resp.1 %}
+                            <td>{{ item }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <!-- тут просто вставляем div высотой 150px чтоб футер немного опустить-->
+            <div class="cap"></div>
+        </div>
+    </div>
+    {% endif %}
+        <br />
+        <!--<a href="/interview/"><span class="btn btn-success">К списку опросов</span></a>-->
+        <br />
 {% endblock %}

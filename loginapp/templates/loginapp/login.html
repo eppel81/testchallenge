@@ -1,14 +1,31 @@
 {% extends "interview/base.html" %}
 {% load crispy_forms_tags %}
-{% block login %}
+
+{% block alert %}
+<div class="container">
+    <div class="row">
+        {% if success_registration %}
+            <div class="alert alert-success" role="alert">{{ success_registration }}</div>
+        {% endif %}
+
+        {% if login_error %}
+            <div class="alert alert-danger" role="alert">{{ login_error }}</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock alert %}
+
+
+{% block title%}
+    <h2>Введите ваши учетные данные</h2>
+{% endblock title%}
+
+{% block content %}
     <div class="container">
         <div class="row>">
             <!--<div class="col-xs-4"></div>-->
                 <div class="col-xs-4 col-xs-offset-4">
     <!--<div class="large-offset-3 large-6 columns">-->
-                {% if success_registration %}
-                    <h2>{{ success_registration }}</h2>
-                {% endif %}
                 <form action="/auth/login/" method="post">
                     {% csrf_token %}
                     <!--<div class="form-group">-->
@@ -21,10 +38,6 @@
                     <!--</div>-->
                     {{ form|crispy }}
 
-                    {% if login_error %}
-                        <div class="alert alert-danger">{{ login_error }}</div>
-                    {% endif %}
-
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Войти" />
                         <div class="btn btn-info btn-sm pull-right"><a href="/auth/register">Регистрация</a></div>
@@ -32,8 +45,9 @@
                 </form>
                 <br /><br />
                 <!--<a class="btn btn-success" href="/interview/">Перейти к списку опросов</a>-->
+                <div class="cap"></div>
             </div>
         </div>
     </div>
     <!--</div>-->
-{% endblock %}
+{% endblock content %}

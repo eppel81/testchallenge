@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row
 from django import forms
 from models import Interview
 import re
@@ -16,9 +18,13 @@ class FormInterview(forms.Form):
 
     def __init__(self, elemslist, *args, **kwargs):
         super(FormInterview, self).__init__(*args, **kwargs)
+
         # import pdb
         # pdb.set_trace()
+        list_fields = []
         for elem in elemslist:
+            list_fields.append(str(elem.id))
+
             if elem.type_elem == 'txt':
                  self.fields[str(elem.id)] = forms.CharField(label=elem.text_before_elem, max_length=200,
                                                         initial=elem.default_value, help_text=elem.text_after_elem)
@@ -44,6 +50,7 @@ class FormInterview(forms.Form):
                                                        widget=forms.NumberInput(attrs={'min': bottom, 'max': top}),
                                                        help_text=elem.text_after_elem, initial=elem.default_value)
         # super(FormInterview, self).__init__(*args, **kwargs)
+
 
     # def save(self):
     #     pass

@@ -1,35 +1,151 @@
 {% extends "interview/base.html" %}
-{% block title %} {{ title }} {% endblock %}
-{% block content %}
-    {% if interview %}
-        <h2>{{ interview.description }}</h2>
-        {% for item in interview.interelem_set.all %}
-            <h6>Вопрос № {{ forloop.counter }}</h6>
-            <div class="small-6 medium-11 medium-centered column">
-                <ul class="">
-                    {% if item.text_before_elem %}
-                        <li>Текст перед элементом: <strong>{{ item.text_before_elem }}</strong></li>
-                    {% endif %}
-                    <li>Тип элемента: <strong>{{ item.type_elem }}</strong></li>
-                    {% if item.text_after_elem %}
-                        <li>Текст после элемента: <strong>{{ item.text_after_elem }}</strong></li>
-                    {% endif %}
-                    {% if item.default_value %}
-                        <li>Значение по умолчанию: <strong>{{ item.default_value }}</strong></li>
-                    {% endif %}
-                    {% if item.radio_select_values %}
-                        <li>Список возможных вариантов: <strong>{{ item.radio_select_values }}</strong></li>
-                    {% endif %}
-                    {% if item.top_bottom_values %}
-                        <li>min, max значения для Digital picker: <strong>{{ item.top_bottom_values }}</strong></li>
-                    {% endif %}
-                    {% if item.position %}
-                        <li>Номер позиции в опросе: <strong>{{ item.position }}</strong></li>
-                    {% endif %}
-                    <p><em class="em-margin"><a href="#">изменить</a></em><em class="em-margin"><a href="#">удалить</a></em></p>
-                </ul>
-            </div><hr />
-        {% endfor %}
-        <a href="#">Добавить элемент к опросу</a>
+{% load crispy_forms_tags %}
+{% load crispy_forms_utils %}
+{% load crispy_forms_field %}
+
+{% block alert %}
+    {% if inter_form.errors or elem_formset.errors %}
+        <div class="container">
+            <div class="row">
+                <div class="alert alert-danger" role="alert">Некорректно заполнена форма!</div>
+                {{ form.errors }}
+            </div>
+        </div>
     {% endif %}
-{% endblock %}
+{% endblock alert %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% specialspaceless %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form action="" method="post">
+            {% csrf_token %}
+
+                <!-- interview form-->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4>Опрос:&nbsp;&nbsp;&nbsp;{{ title }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-xs-12">
+                            <!--{{ inter_form|crispy }}-->
+
+                            <table {% if form_id %} id="{{ form_id }}_table"{% endif%} class="table table-striped table-condensed">
+                                <thead>
+                                    {% if formset.readonly and not formset.queryset.exists %}
+                                    {% else %}
+                                        <tr>
+                                            {% for field in inter_form %}
+                                                {% if field.label and not field|is_checkbox and not field.is_hidden %}
+                                                    <th for="{{ field.auto_id }}" class="control-label {% if field.field.required %}requiredField{% endif %}">
+                                                        {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+                                                    </th>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endif %}
+                                </thead>
+
+                                <tbody>
+                                    {% if form_show_errors and not form.is_extra %}
+                                        {% include "bootstrap3/errors.html" %}
+                                    {% endif %}
+
+                                    <tr>
+                                        {% for field in inter_form %}
+                                            {% if field.name != 'create_date' %}
+                                                {% include 'bootstrap3/field.html' with tag="th" form_show_labels=False form_show_errors=True %}
+                                            {% else %}
+                                                <th>
+                                                    <div class='input-group date' id='datetimepicker2'>
+                                                            <input type='text' class="form-control" id="id_create_date" value='{{ field.value|date:"Y-n-d H:i:s" }}' name="create_date"/>
+                                                            <!--<input type='text' class="form-control" id="id_create_date" value={{ field.value }} name="create_date"/>-->
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                                <!--{% if field.errors %}-->
+                                                                    <!--{{ field.errors }}-->
+                                                                <!--{% endif %}-->
+                                                    </div>
+                                                                {% if field.errors %}
+                                                                    <!--<div class="alert alert-block alert-danger">-->
+                                                                    <div class="alert-danger">
+                                                                        <ul>
+                                                                            {{ field.errors|unordered_list }}
+                                                                        </ul>
+                                                                    </div>
+                                                                {% endif %}
+
+                                                        <script type="text/javascript">
+                                                            $(function () {
+                                                                var dt = $("#datetimepicker2").find("input").val();
+                                                                $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss', defaultDate: dt});
+                                                            });
+                                                        </script>
+                                                </th>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- elements of interview -->
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4>Элементы опроса:</h4>
+                    </div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <!--{{ inter_form|crispy }}-->
+                                <div>
+                                    {{ elem_formset.management_form|crispy }}
+                                </div>
+
+                                <table{% if form_id %} id="{{ form_id }}_table"{% endif%} class="table table-striped table-condensed">
+                                    <thead>
+                                        {% if formset.readonly and not formset.queryset.exists %}
+                                        {% else %}
+                                            <tr>
+                                                {% for field in elem_formset.forms.0 %}
+                                                    {% if field.label and not field|is_checkbox and not field.is_hidden %}
+                                                        <th for="{{ field.auto_id }}" class="control-label {% if field.field.required %}requiredField{% endif %}">
+                                                            {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+                                                        </th>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+
+                                    <tbody>
+                                        {% for form in elem_formset %}
+                                            {% if form_show_errors and not form.is_extra %}
+                                                {% include "bootstrap3/errors.html" %}
+                                            {% endif %}
+
+                                            <tr>
+                                                {% for field in form %}
+                                                    {% include 'bootstrap3/field.html' with tag="th" form_show_labels=False form_show_errors=True %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                </div>
+                    <input class="btn btn-primary pull-right" type="submit" value="сохранить"><br />
+            </form>
+        </div>
+    </div>
+    <!-- elements editing-->
+{% endblock content %}
+{% endspecialspaceless %}

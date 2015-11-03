@@ -96,6 +96,10 @@ def register(request):
             send_mail(email_subject, email_body, 'testchallengedjango@gmail.com', [email], fail_silently=False)
 
             c_dict['success_registration'] = 'Не забудьте подтвердить регистрацию в электронной почте'
+
+            # подсовываем форму для логина, а не регистрации!!!
+            regform = forms.LoginForm()
+            c_dict['form'] = regform
             return render(request, 'loginapp/login.html', c_dict)
     else:
         regform = forms.RegistrationForm()
@@ -143,5 +147,7 @@ def register_confirm(request, activation_key):
         user.is_active = True
         user.save()
         c_dict['success_registration'] = 'Вы успешно зарегистрированы, теперь можно и авторизироваться.'
+        regform = forms.LoginForm()
+        c_dict['form'] = regform
     return render(request, 'loginapp/login.html', c_dict)
     # return redirect('/interview/')
